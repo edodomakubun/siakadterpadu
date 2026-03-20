@@ -887,7 +887,7 @@
         const API_URL = "https://script.google.com/macros/s/AKfycbx20gIWQIbNBa2f6o1dr3elRkf1Us8G0Ypb1K8x53fTIwndiSsa6mGuZSWtpfSy8EAk/exec";
         // Default teacher API URL if none is configured
         let TEACHER_API_URL = 'https://script.google.com/macros/s/AKfycbz6yVDqJbjY_mud1Yg7j5bwL7vQIU-8zHso2o6ycNoyEsD_5STlvxgkJHC-Bl3oJY3oUw/exec';
-        let TEACHER_DATA_LIMIT = 3000; // Default limit
+        let TEACHER_DATA_LIMIT = 2000; // Default limit
 
         const TEACHER_LIST = [
             "Soferet Sefatja Domakubun.S.Pd", "Marthina Kormasela.S.PdK", "Oktovina Ratsina.S.Pd",
@@ -1284,8 +1284,24 @@
         function finalizeTeacherPDF(doc, filename, mode) {
             if (mode === 'preview') {
                 const previewDiv = document.getElementById('teacher-pdf-preview');
-                previewDiv.innerHTML = `<iframe width='100%' height='100%' src='${doc.output('datauristring')}' style='border:none'></iframe>`;
-                previewDiv.scrollIntoView({ behavior: "smooth" });
+                
+                // Menampilkan indikator loading sementara agar layar tidak freeze
+                previewDiv.innerHTML = "<div style='display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; color: var(--primary-dark);'><i class='fas fa-circle-notch fa-spin fa-3x' style='margin-bottom:15px;'></i><p style='font-weight:bold;'>Memuat Preview PDF...</p></div>";
+                previewDiv.scrollIntoView({ behavior: "smooth", block: "center" });
+
+                // Memberi sedikit jeda agar animasi loading sempat ter-render sebelum generate PDF
+                setTimeout(() => {
+                    try {
+                        // Menggunakan metode Blob URL (Lebih stabil & aman di iFrame dibanding datauristring)
+                        const pdfBlob = doc.output('blob');
+                        const blobUrl = URL.createObjectURL(pdfBlob);
+                        previewDiv.innerHTML = `<iframe width='100%' height='100%' src='${blobUrl}' style='border:none; border-radius:12px;'></iframe>`;
+                    } catch(err) {
+                        // Fallback darurat jika environment browser memblokir blob
+                        previewDiv.innerHTML = `<iframe width='100%' height='100%' src='${doc.output('datauristring')}' style='border:none; border-radius:12px;'></iframe>`;
+                    }
+                }, 300);
+
             } else {
                 doc.save(filename);
             }
