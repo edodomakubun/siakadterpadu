@@ -6,7 +6,7 @@
     <meta content='width=device-width, initial-scale=1' name='viewport' />
     <title>SIAKAD &amp; Presensi Terpadu</title>
 
-    <link href='https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&amp;display=swap' rel='stylesheet' />
+    <link href='https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap' rel='stylesheet' />
     <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' rel='stylesheet' />
 
     <!-- Fixed script tags for HTML5 compatibility -->
@@ -198,32 +198,6 @@
             margin-bottom: 1rem;
             box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
             transform: rotate(-10deg);
-        }
-
-        .role-tabs {
-            display: flex;
-            background: rgba(0, 0, 0, 0.05);
-            padding: 5px;
-            border-radius: 12px;
-            margin-bottom: 2rem;
-        }
-
-        .role-tab {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            background: transparent;
-            font-weight: 700;
-            color: var(--text-muted);
-            cursor: pointer;
-            border-radius: 10px;
-            transition: 0.3s;
-        }
-
-        .role-tab.active {
-            background: white;
-            color: var(--primary-dark);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
 
         .form-group {
@@ -686,13 +660,10 @@
         <div class='bg-shape shape-2'></div>
         <div class='login-card'>
             <div class='login-header'>
-                <div class='login-icon'><i class='fas fa-graduation-cap'></i></div>
+                <div class='login-icon'><i class='fas fa-user-shield'></i></div>
                 <h2 style='font-weight:700'>SIAKAD TERPADU</h2>
-                <p style='color:#8d99ae'>Silakan masuk untuk melanjutkan</p>
-            </div>
-            <div class='role-tabs'>
-                <button class='role-tab active' id='tab-guru' onclick='setRole(&apos;guru&apos;)'><i class='fas fa-chalkboard-teacher'></i> Guru</button>
-                <button class='role-tab' id='tab-admin' onclick='setRole(&apos;admin&apos;)'><i class='fas fa-user-shield'></i> Admin</button>
+                <p style='color:#8d99ae'>Login Administrator Area</p>
+                <br>
             </div>
             <form onsubmit='handleLogin(event)'>
                 <div class='form-group'><i class='fas fa-user form-icon'></i><input class='form-input' id='u_name' placeholder='Username' required='required' /></div>
@@ -706,18 +677,10 @@
         <aside class='sidebar' id='sidebar'>
             <div class='sidebar-header'><i class='fas fa-school'></i> Presensi</div>
             <nav class='nav-menu'>
-                <div class='hidden' id='menu-guru'>
-                    <span class='nav-label'>Daftar Tab</span>
-                    <div class='nav-item active' onclick='navTo(&apos;absensi&apos;, this)'><i class='fas fa-clipboard-check'></i> Absensi Siswa</div>
-                    <div class='nav-item' onclick='navTo(&apos;siswa&apos;, this)'><i class='fas fa-user-graduate'></i>
-                        Data Siswa</div>
-                    <div class='nav-item' onclick='navTo(&apos;ekspor&apos;, this)'><i class='fas fa-print'></i> Cetak
-                        Absensi Siswa</div>
-                </div>
-                <div class='hidden' id='menu-admin'>
+                <div id='menu-admin'>
                     <span class='nav-label'>Administrasi</span>
-                    <div class='nav-item active' onclick='navTo(&apos;admin-users&apos;, this)'><i class='fas fa-chalkboard-teacher'></i> Data Guru</div>
-                    <div class='nav-item' onclick='navTo(&apos;cetak-guru&apos;, this)'><i class='fas fa-file-invoice'></i> Laporan Absensi Guru</div>
+                    <div class='nav-item active' onclick='navTo(&apos;cetak-guru&apos;, this)'><i class='fas fa-file-invoice'></i> Laporan Absensi Guru</div>
+                    <div class='nav-item' onclick='navTo(&apos;admin-users&apos;, this)'><i class='fas fa-chalkboard-teacher'></i> Data Guru</div>
                     <div class='nav-item' onclick='navTo(&apos;admin-config&apos;, this)'><i class='fas fa-sliders-h'></i>
                         Konfigurasi</div>
                 </div>
@@ -737,7 +700,7 @@
                 <div style='display:flex;align-items:center;gap:15px'>
                     <div class='mobile-toggle' onclick='document.getElementById(&apos;sidebar&apos;).classList.toggle(&apos;show&apos;)'><i class='fas fa-bars'></i></div>
                     <div class='page-title'>
-                        <h2 id='page-heading'>Dashboard</h2>
+                        <h2 id='page-heading'>Laporan Absensi Guru</h2>
                     </div>
                 </div>
                 <div class='academic-pill'><i class='far fa-calendar-alt'></i> <span id='lbl-ta'>-</span> &#8226; <span id='lbl-smt'>-</span></div>
@@ -745,85 +708,7 @@
 
             <div class='container'>
 
-                <div class='page-section hidden' id='page-absensi'>
-                    <div class='card'>
-                        <div class='card-header'>
-                            <h3><i class='fas fa-user-clock' style='color:#4361ee'></i> Input Kehadiran Siswa <span class='badge-count' id='count-absen'>0 Siswa</span></h3>
-                        </div>
-                        <div style='display:flex; gap:15px; flex-wrap:wrap; margin-bottom:1.5rem; align-items:flex-end'>
-                            <div style='flex:1; min-width:200px'><label style='font-size:0.8rem; font-weight:700; color:#8d99ae'>TANGGAL</label><input class='form-control' id='inp-date' type='date' /></div>
-                            <div style='flex:1; min-width:200px'><label style='font-size:0.8rem; font-weight:700; color:#8d99ae'>KELAS</label><select class='form-control' id='inp-kelas'>
-                                    <option value=''>- Pilih Kelas -</option>
-                                </select></div>
-                            <button class='btn btn-primary' onclick='loadAbsensi()'>Tarik Data</button>
-                        </div>
-                        <div class='table-responsive'>
-                            <table id='tbl-absen'>
-                                <thead>
-                                    <tr>
-                                        <th width='10%'>NIS</th>
-                                        <th width='30%'>NAMA SISWA</th>
-                                        <th width='40%'>STATUS</th>
-                                        <th width='20%'>KETERANGAN</th>
-                                    </tr>
-                                </thead>
-                                <tbody id='tbody-absen'>
-                                    <tr>
-                                        <td align='center' colspan='4' style='padding:3rem'>Silakan pilih filter data
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div style='margin-top:2rem; text-align:right'><button class='btn btn-primary' id='btn-save-absen' onclick='saveAbsensi()'>SIMPAN ABSENSI</button></div>
-                    </div>
-                </div>
-
-                <div class='page-section hidden' id='page-siswa'>
-                    <div class='card'>
-                        <div class='card-header'>
-                            <h3><i class='fas fa-user-graduate' style='color:#f72585'></i> Data Peserta Didik <span class='badge-count' id='count-siswa'>0 Siswa</span></h3>
-                        </div>
-                        <div class='table-responsive'>
-                            <table id='tbl-master-siswa'>
-                                <thead>
-                                    <tr>
-                                        <th>NIS</th>
-                                        <th>NAMA LENGKAP</th>
-                                        <th>KELAS</th>
-                                    </tr>
-                                </thead>
-                                <tbody id='tbody-siswa'>
-                                    <tr>
-                                        <td align='center' colspan='3'>Tidak ada data, silahkan &quot;Tarik Data&quot;
-                                            pada tab Absensi</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <div class='page-section hidden' id='page-ekspor'>
-                    <div class='card'>
-                        <div class='card-header'>
-                            <h3><i class='fas fa-file-export'></i> Ekspor Daftar Hadir Siswa</h3>
-                        </div>
-                        <div style='background:#f8f9fa; padding:1.5rem; border-radius:12px; margin-bottom:1.5rem'>
-                            <div style='margin-bottom:1rem'><label style='font-weight:700; font-size:0.8rem'>PILIH
-                                    KELAS</label><select class='form-control' id='pdf-kelas'></select></div>
-                            <div style='margin-bottom:1rem'><label style='font-weight:700; font-size:0.8rem'>PILIH
-                                    BULAN</label><input class='form-control' id='pdf-bulan' type='month' /></div>
-                            <div style='margin-bottom:1rem'><label style='font-weight:700; font-size:0.8rem'>MATA
-                                    PELAJARAN</label><input class='form-control' id='pdf-mapel' placeholder='Contoh: Matematika | Jika Guru Kelas maka ketik &quot;Guru Kelas&quot;' /></div>
-                            <button class='btn btn-primary' onclick='generatePDF()' style='width:100%; justify-content:center'>BUAT DAFTAR HADIR</button>
-                        </div>
-                        <div id='pdf-preview' style='height:400px; background:#e9ecef; border-radius:12px; display:flex; align-items:center; justify-content:center; color:#8d99ae'>
-                            Preview...</div>
-                    </div>
-                </div>
-
-                <div class='page-section hidden' id='page-cetak-guru'>
+                <div class='page-section' id='page-cetak-guru'>
                     <div class='card'>
                         <div class='card-header'>
                             <h3><i class='fas fa-file-invoice' style='color:#6f42c1'></i> Laporan Kehadiran Guru</h3>
@@ -1002,7 +887,7 @@
         const API_URL = "https://script.google.com/macros/s/AKfycbx20gIWQIbNBa2f6o1dr3elRkf1Us8G0Ypb1K8x53fTIwndiSsa6mGuZSWtpfSy8EAk/exec";
         // Default teacher API URL if none is configured
         let TEACHER_API_URL = 'https://script.google.com/macros/s/AKfycbz6yVDqJbjY_mud1Yg7j5bwL7vQIU-8zHso2o6ycNoyEsD_5STlvxgkJHC-Bl3oJY3oUw/exec';
-        let TEACHER_DATA_LIMIT = 2000; // Default limit
+        let TEACHER_DATA_LIMIT = 3000; // Default limit
 
         const TEACHER_LIST = [
             "Soferet Sefatja Domakubun.S.Pd", "Marthina Kormasela.S.PdK", "Oktovina Ratsina.S.Pd",
@@ -1015,12 +900,13 @@
             nama: "SOFERET S DOMAKUBUN,S.Pd",
             nip: "19680606 199111 1 001"
         };
+        
         let teacherGlobalData = [];
+        let liburGlobalData = [];
+        let approvalGlobalData = [];
         let currentUser = null;
-        let selectedRole = 'guru';
-        const {
-            jsPDF
-        } = window.jspdf;
+        
+        const { jsPDF } = window.jspdf;
 
         // --- CUSTOM ALERT FUNCTION ---
         function showAlert(msg, title = "Informasi") {
@@ -1032,7 +918,6 @@
             boxTitle.innerText = title;
             overlay.style.display = 'flex';
 
-            // Trigger reflow agar transisi opacity jalan
             void overlay.offsetWidth;
             overlay.classList.add('show');
         }
@@ -1042,20 +927,13 @@
             overlay.classList.remove('show');
             setTimeout(() => {
                 overlay.style.display = 'none';
-            }, 300); // Sesuai durasi CSS transition
+            }, 300); 
         }
 
         document.addEventListener("DOMContentLoaded", function() {
             checkAuth();
-            document.getElementById('inp-date').value = new Date().toISOString().split('T')[0];
             initTeacherFeature();
         });
-
-        function setRole(role) {
-            selectedRole = role;
-            document.querySelectorAll('.role-tab').forEach(t => t.classList.remove('active'));
-            document.getElementById('tab-' + role).classList.add('active');
-        }
 
         function handleLogin(e) {
             e.preventDefault();
@@ -1067,7 +945,7 @@
                     method: 'POST',
                     body: JSON.stringify({
                         action: 'login',
-                        role: selectedRole,
+                        role: 'admin',
                         username: document.getElementById('u_name').value.trim(),
                         password: document.getElementById('u_pass').value.trim()
                     })
@@ -1087,42 +965,28 @@
 
         function checkAuth() {
             const sess = JSON.parse(localStorage.getItem('siakad_sess'));
-            if (sess) {
+            if (sess && sess.role === 'admin') {
                 currentUser = sess;
                 document.getElementById('login-overlay').style.display = 'none';
                 document.getElementById('app-wrapper').style.display = 'flex';
                 document.getElementById('lbl-user').innerText = sess.user.nama;
                 document.getElementById('user-initial').innerText = sess.user.nama.charAt(0);
-                document.getElementById('lbl-role').innerText = sess.role === 'admin' ? 'Administrator' : 'Guru';
+                document.getElementById('lbl-role').innerText = 'Administrator';
                 document.getElementById('lbl-ta').innerText = sess.config.tahun_ajar;
                 document.getElementById('lbl-smt').innerText = sess.config.semester;
 
-                // Load Teacher API URL & Limit from config if available
-                if (sess.config.url_guru) {
-                    TEACHER_API_URL = sess.config.url_guru;
-                }
-                if (sess.config.limit_guru) {
-                    TEACHER_DATA_LIMIT = parseInt(sess.config.limit_guru) || 2000;
-                }
+                if (sess.config.url_guru) TEACHER_API_URL = sess.config.url_guru;
+                if (sess.config.limit_guru) TEACHER_DATA_LIMIT = parseInt(sess.config.limit_guru) || 2000;
 
-                if (sess.role === 'admin') {
-                    document.getElementById('menu-admin').classList.remove('hidden');
-                    document.getElementById('menu-guru').classList.add('hidden');
-                    navTo('admin-users', document.querySelector('#menu-admin .nav-item'));
-                    loadUsers();
-                    document.getElementById('cfg-ta').value = sess.config.tahun_ajar;
-                    document.getElementById('cfg-smt').value = sess.config.semester;
-                    document.getElementById('cfg-url-guru').value = sess.config.url_guru || TEACHER_API_URL;
-                    document.getElementById('cfg-limit-guru').value = sess.config.limit_guru || TEACHER_DATA_LIMIT;
-                } else {
-                    document.getElementById('menu-guru').classList.remove('hidden');
-                    document.getElementById('menu-admin').classList.add('hidden');
-                    navTo('absensi', document.querySelector('#menu-guru .nav-item'));
-                    const opts = sess.user.kelas.map(k => `<option value='${k.trim()}'>${k.trim()}</option>`).join('');
-                    document.getElementById('inp-kelas').innerHTML = "<option value=''>- Pilih Kelas -</option>" + opts;
-                    document.getElementById('pdf-kelas').innerHTML = document.getElementById('inp-kelas').innerHTML;
-                }
+                navTo('cetak-guru', document.querySelector('#menu-admin .nav-item:nth-child(1)'));
+                loadUsers();
+                document.getElementById('cfg-ta').value = sess.config.tahun_ajar;
+                document.getElementById('cfg-smt').value = sess.config.semester;
+                document.getElementById('cfg-url-guru').value = sess.config.url_guru || TEACHER_API_URL;
+                document.getElementById('cfg-limit-guru').value = sess.config.limit_guru || TEACHER_DATA_LIMIT;
+                
             } else {
+                localStorage.removeItem('siakad_sess');
                 document.getElementById('login-overlay').style.display = 'flex';
                 document.getElementById('app-wrapper').style.display = 'none';
             }
@@ -1135,11 +999,9 @@
             if (el) el.classList.add('active');
 
             let title = "Dashboard";
-            if (page === 'absensi') title = "Input Absensi Siswa";
-            if (page === 'siswa') title = "Data Siswa";
-            if (page === 'ekspor') title = "Cetak Daftar Hadir Siswa";
-            if (page === 'admin-users') title = "Manajemen User Guru";
+            if (page === 'admin-users') title = "Data Guru";
             if (page === 'cetak-guru') title = "Laporan Absensi Guru";
+            if (page === 'admin-config') title = "Konfigurasi Sistem";
 
             document.getElementById('page-heading').innerText = title;
             if (window.innerWidth < 900) document.getElementById('sidebar').classList.remove('show');
@@ -1152,7 +1014,6 @@
             }
         }
 
-        // --- MANAJEMEN USER (ADMIN) ---
         function loadUsers() {
             fetch(API_URL + "?action=get_all_users").then(r => r.json()).then(res => {
                 let html = "";
@@ -1236,180 +1097,8 @@
             });
         }
 
-        // --- ABSENSI SISWA ---
-        function loadAbsensi() {
-            const k = document.getElementById('inp-kelas').value;
-            const t = document.getElementById('inp-date').value;
-            if (!k || !t) {
-                showAlert("Pilih Kelas & Tanggal", "Peringatan");
-                return;
-            }
-            document.getElementById('tbody-absen').innerHTML = "<tr><td colspan='4' align='center' style='padding:2rem'>Memuat data...</td></tr>";
-            fetch(`${API_URL}?action=get_absensi&kelas=${encodeURIComponent(k)}&tanggal=${t}`).then(r => r.json()).then(res => {
-                let html = "",
-                    htmlSiswa = "";
-                res.data.forEach(d => {
-                    html += `<tr data-nis="${d.nis}" data-nama="${d.nama}"><td style='font-weight:700'>${d.nis}</td><td>${d.nama}</td><td><div style='display:flex; gap:15px'><label style='cursor:pointer'><input type='radio' name='st_${d.nis}' value='H' ${d.status == 'H' ? 'checked' : ''}> Hadir</label><label style='cursor:pointer'><input type='radio' name='st_${d.nis}' value='S' ${d.status == 'S' ? 'checked' : ''}> Sakit</label><label style='cursor:pointer'><input type='radio' name='st_${d.nis}' value='I' ${d.status == 'I' ? 'checked' : ''}> Izin</label><label style='cursor:pointer'><input type='radio' name='st_${d.nis}' value='A' ${d.status == 'A' ? 'checked' : ''}> Alpa</label></div></td><td><input class='form-control' value='${d.ket}' placeholder='-' style='padding:8px'></td></tr>`;
-                    htmlSiswa += `<tr><td>${d.nis}</td><td>${d.nama}</td><td>${k}</td></tr>`;
-                });
-                document.getElementById('tbody-absen').innerHTML = html || "<tr><td colspan='4' align='center'>Data kosong</td></tr>";
-                document.getElementById('tbody-siswa').innerHTML = htmlSiswa;
-                const count = res.data.length;
-                document.getElementById('count-absen').innerText = count + " Siswa";
-                document.getElementById('count-siswa').innerText = count + " Siswa";
-            });
-        }
-
-        function saveAbsensi() {
-            const rows = document.querySelectorAll('#tbody-absen tr');
-            if (rows.length < 1 || rows[0].innerText.includes("Memuat")) return;
-            let data = [];
-            rows.forEach(r => {
-                if (r.hasAttribute('data-nis')) {
-                    data.push({
-                        nis: r.getAttribute('data-nis'),
-                        nama: r.getAttribute('data-nama'),
-                        status: r.querySelector(`input[name='st_${r.getAttribute('data-nis')}']:checked`)?.value || 'A',
-                        ket: r.querySelector('.form-control').value
-                    });
-                }
-            });
-            const btn = document.getElementById('btn-save-absen');
-            const oldText = btn.innerText;
-            btn.innerText = "MENYIMPAN...";
-            btn.disabled = true;
-            fetch(API_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        action: 'simpan_absensi',
-                        id_guru: currentUser.user.id,
-                        kelas: document.getElementById('inp-kelas').value,
-                        tanggal: document.getElementById('inp-date').value,
-                        ta: currentUser.config.tahun_ajar,
-                        smt: currentUser.config.semester,
-                        data_siswa: data
-                    })
-                })
-                .then(r => r.json()).then(res => showAlert(res.message, "Info")).finally(() => {
-                    btn.innerText = oldText;
-                    btn.disabled = false;
-                });
-        }
-
-        function generatePDF() {
-            const k = document.getElementById('pdf-kelas').value;
-            const b = document.getElementById('pdf-bulan').value;
-            if (!k || !b) {
-                showAlert("Pilih Kelas & Bulan", "Peringatan");
-                return;
-            }
-            document.getElementById('pdf-preview').innerHTML = "Memproses...";
-            fetch(`${API_URL}?action=get_rekap_bulanan&kelas=${encodeURIComponent(k)}&bulan=${b}`).then(r => r.json()).then(res => {
-                if (res.status === 'success') createPDF(res.data, k, b);
-                else document.getElementById('pdf-preview').innerHTML = "Gagal.";
-            });
-        }
-
-        function createPDF(data, kelas, bulan) {
-            const doc = new jsPDF({
-                orientation: 'landscape',
-                unit: 'mm',
-                format: 'a4'
-            });
-            const dateObj = new Date(bulan + "-01");
-            const namaBulan = dateObj.toLocaleDateString('id-ID', {
-                month: 'long',
-                year: 'numeric'
-            });
-            const pageWidth = doc.internal.pageSize.getWidth();
-            const centerX = pageWidth / 2;
-            const mapel = document.getElementById('pdf-mapel').value.trim() || 'Tidak Diketahui';
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(10);
-            doc.text(`DAFTAR HADIR PESERTA DIDIK ${kelas.toUpperCase()}`, centerX, 15, {
-                align: 'center'
-            });
-            doc.setFontSize(9);
-            doc.text(`TAHUN PELAJARAN ${currentUser.config.tahun_ajar} | SEMESTER ${currentUser.config.semester.toUpperCase()}`, centerX, 18, {
-                align: 'center'
-            });
-            doc.setFontSize(8);
-            doc.text(`BULAN: ${namaBulan.toUpperCase()}`, centerX, 21, {
-                align: 'center'
-            });
-            doc.setFontSize(8);
-            doc.text(`MATA PELAJARAN: ${mapel}`, centerX, 24, {
-                align: 'center'
-            });
-            let body = [];
-            data.forEach((s, i) => {
-                let row = [(i + 1).toString(), s.nama];
-                for (let d = 1; d <= 31; d++) {
-                    let st = s.rekap.dates[d];
-                    row.push(st === 'H' ? '\u2022' : (st ? st.toLowerCase() : ''));
-                }
-                row.push(s.rekap.summary.H, s.rekap.summary.S, s.rekap.summary.I, s.rekap.summary.A);
-                body.push(row);
-            });
-            let head = ['No', 'Nama Peserta Didik'];
-            for (let i = 1; i <= 31; i++) head.push(i.toString());
-            head.push('H', 'S', 'I', 'A');
-            doc.autoTable({
-                startY: 30,
-                margin: {
-                    left: (pageWidth - 238) / 2
-                },
-                head: [head],
-                body: body,
-                foot: [
-                    [{
-                        content: `KETERANGAN: ( \u2022 ) Hadir   ( s ) Sakit   ( i ) Izin   ( a ) Alpa`,
-                        colSpan: 37,
-                        styles: {
-                            halign: 'left',
-                            fontStyle: 'bold'
-                        }
-                    }]
-                ],
-                theme: 'grid',
-                styles: {
-                    fontSize: 9,
-                    halign: 'center',
-                    cellPadding: 0.5,
-                    lineColor: [0, 0, 0],
-                    lineWidth: 0.1,
-                    valign: 'middle'
-                },
-                headStyles: {
-                    fillColor: [230, 230, 230],
-                    textColor: [0, 0, 0],
-                    fontStyle: 'bold'
-                },
-                columnStyles: {
-                    0: {
-                        cellWidth: 8,
-                        halign: 'center'
-                    },
-                    1: {
-                        cellWidth: 55,
-                        halign: 'left'
-                    }
-                },
-                didParseCell: (d) => {
-                    if (d.column.index >= 2) d.cell.styles.cellWidth = 5;
-                },
-                tableWidth: 238
-            });
-            const todayStr = new Date().toLocaleDateString('id-ID');
-            doc.setFont("helvetica", "italic");
-            doc.setFontSize(8);
-            doc.text(`Diunduh oleh ${document.getElementById('lbl-user').innerText} pada: ${todayStr}`, 14, 200);
-            document.getElementById('pdf-preview').innerHTML = `<iframe width='100%' height='100%' src='${doc.output('datauristring')}' style='border:none'></iframe>`;
-        }
-
-
         // =================================================================================
-        //  LOGIKA BARU: CETAK ABSENSI GURU (INTEGRATED)
+        //  LOGIKA CETAK ABSENSI GURU (SMART CONTEXT: LIBUR & APPROVAL)
         // =================================================================================
 
         function initTeacherFeature() {
@@ -1429,7 +1118,6 @@
             document.querySelectorAll('.teacher-tabs .tab-btn').forEach(el => el.classList.remove('active'));
             document.getElementById('tab-teacher-' + tabName).classList.add('active');
 
-            // Highlight button
             const btns = document.querySelectorAll('.teacher-tabs .tab-btn');
             if (tabName === 'individual') btns[0].classList.add('active');
             else btns[1].classList.add('active');
@@ -1442,27 +1130,46 @@
             loading.style.display = 'block';
 
             try {
-                // Tambahkan parameter limit ke URL
-                const urlWithLimit = `${TEACHER_API_URL}${TEACHER_API_URL.includes('?') ? '&' : '?'}limit=${TEACHER_DATA_LIMIT}`;
+                // Gunakan param action=all untuk mengambil Absen, Libur, Approval sekaligus
+                const urlWithParams = `${TEACHER_API_URL}${TEACHER_API_URL.includes('?') ? '&' : '?'}action=all&limit=${TEACHER_DATA_LIMIT}`;
                 
-                const response = await fetch(urlWithLimit);
+                const response = await fetch(urlWithParams);
                 const data = await response.json();
                 
-                // Backup client-side slicing jika server mengabaikan parameter limit
-                teacherGlobalData = data.slice(0, TEACHER_DATA_LIMIT);
+                // Pisahkan data yang diterima
+                if (data.absen) {
+                    teacherGlobalData = data.absen;
+                    liburGlobalData = data.libur || [];
+                    approvalGlobalData = data.approval || [];
+                } else {
+                    // Fallback backward compatibility jika struktur salah
+                    teacherGlobalData = Array.isArray(data) ? data : [];
+                    liburGlobalData = [];
+                    approvalGlobalData = [];
+                }
                 
                 loading.style.display = 'none';
                 btn.disabled = false;
 
-                if (teacherGlobalData.length > 0) showAlert(`Berhasil! ${teacherGlobalData.length} data guru diambil.`, "Sukses");
-                else showAlert('Data 0. Cek Spreadsheet Guru.', "Info");
+                if (teacherGlobalData.length > 0) {
+                    showAlert(`Berhasil! ${teacherGlobalData.length} data absen, ${liburGlobalData.length} libur, dan ${approvalGlobalData.length} izin disinkronkan.`, "Sukses");
+                } else {
+                    showAlert('Data absen 0. Cek Spreadsheet Guru.', "Info");
+                }
 
             } catch (error) {
                 console.error(error);
                 loading.style.display = 'none';
                 btn.disabled = false;
-                showAlert('Gagal mengambil data guru.', "Error");
+                showAlert('Gagal mengambil data dari Google Sheet.', "Error");
             }
+        }
+
+        // HELPER DATE PARSING
+        function parseDateID(dateStr) {
+            if(!dateStr) return new Date(0);
+            let p = dateStr.split('/');
+            return new Date(p[2], p[1]-1, p[0]); // Format YYYY, MM, DD
         }
 
         function dateToTextID(dateObj) {
@@ -1478,20 +1185,81 @@
             return (parseInt(parts[0]) * 60) + parseInt(parts[1]);
         }
 
-        function processSmartMatrix(rawData, targetDatesObj) {
-            let matrix = {};
-            TEACHER_LIST.forEach(name => matrix[name] = {});
-            let targetStrings = targetDatesObj.map(d => dateToTextID(d));
+        function isDateInRange(targetDate, startDateStr, endDateStr) {
+            let t = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate()).getTime();
+            let s = parseDateID(startDateStr).getTime();
+            let eStr = endDateStr ? endDateStr : startDateStr; // Jika end kosong, set sama dgn start
+            let e = parseDateID(eStr).getTime();
+            return t >= s && t <= e;
+        }
 
-            rawData.forEach(item => {
+        function isHoliday(targetDate) {
+            for(let lib of liburGlobalData) {
+                if(isDateInRange(targetDate, lib.tgl_mulai, lib.tgl_selesai)) {
+                    return lib; // Kembalikan object liburnya
+                }
+            }
+            return null;
+        }
+
+        function getApprovalStatus(nama, targetDate) {
+            for(let app of approvalGlobalData) {
+                if(app.nama === nama && (app.status || "").toUpperCase() === "DISETUJUI") {
+                    if(isDateInRange(targetDate, app.tgl_mulai, app.tgl_selesai)) {
+                        let tipe = (app.tipe || "").toUpperCase();
+                        if(tipe.includes("SAKIT")) return "S";
+                        if(tipe.includes("IZIN") || tipe.includes("IJIN")) return "I";
+                        if(tipe.includes("CUTI")) return "C";
+                        return tipe.charAt(0); // Fallback inisial
+                    }
+                }
+            }
+            return null;
+        }
+
+        function getHolidaysInDates(datesArray) {
+            let found = [];
+            let addedNames = new Set();
+            datesArray.forEach(d => {
+                if (!d) return;
+                let hol = isHoliday(d);
+                if(hol && !addedNames.has(hol.nama_libur)) {
+                    found.push(hol);
+                    addedNames.add(hol.nama_libur);
+                }
+            });
+            return found;
+        }
+
+        function processSmartMatrix(absenData, targetDatesObj) {
+            let matrix = {};
+            // 1. Inisialisasi & Isi data Approval (Izin/Sakit/Cuti)
+            TEACHER_LIST.forEach(name => {
+                matrix[name] = {};
+                targetDatesObj.forEach(d => {
+                    if(!d) return;
+                    let dateKey = dateToTextID(d);
+                    let appStatus = getApprovalStatus(name, d);
+                    if(appStatus) {
+                        // Jika ada izin, otomatis isi S/I/C
+                        matrix[name][dateKey] = { fixedMasuk: appStatus, fixedPulang: appStatus };
+                    } else {
+                        matrix[name][dateKey] = { fixedMasuk: null, fixedPulang: null };
+                    }
+                });
+            });
+
+            // 2. Timpa dengan data Absen Jam Mesin (hanya jika bukan S/I/C)
+            let targetStrings = targetDatesObj.filter(d => d).map(d => dateToTextID(d));
+            absenData.forEach(item => {
                 if (!TEACHER_LIST.includes(item.nama)) return;
                 if (targetStrings.includes(item.tgl)) {
                     let dateKey = item.tgl;
-                    if (!matrix[item.nama][dateKey]) matrix[item.nama][dateKey] = {
-                        fixedMasuk: null,
-                        fixedPulang: null
-                    };
                     let entry = matrix[item.nama][dateKey];
+
+                    // Kunci Keamanan: Jangan timpa sel jika statusnya sudah diisi oleh Approval (S/I/C)
+                    if(entry.fixedMasuk === 'S' || entry.fixedMasuk === 'I' || entry.fixedMasuk === 'C') return;
+
                     let ket = (item.keterangan || "").toLowerCase().trim();
                     let timeStr = item.jam;
                     if (ket.includes("masuk") || ket.includes("terlambat") || ket.includes("datang")) {
@@ -1517,10 +1285,7 @@
             if (mode === 'preview') {
                 const previewDiv = document.getElementById('teacher-pdf-preview');
                 previewDiv.innerHTML = `<iframe width='100%' height='100%' src='${doc.output('datauristring')}' style='border:none'></iframe>`;
-                // Scroll ke area preview
-                previewDiv.scrollIntoView({
-                    behavior: "smooth"
-                });
+                previewDiv.scrollIntoView({ behavior: "smooth" });
             } else {
                 doc.save(filename);
             }
@@ -1529,7 +1294,7 @@
         // --- PDF GENERATION LOGIC FOR TEACHERS ---
         function generateIndividualPDF(mode) {
             if (teacherGlobalData.length === 0) {
-                showAlert("Ambil data dulu.", "Peringatan");
+                showAlert("Ambil data server dulu.", "Peringatan");
                 return;
             }
             const selectedGuru = document.getElementById('t_guruSelector').value;
@@ -1539,19 +1304,18 @@
             }
             const selectedMonth = parseInt(document.getElementById('t_month').value);
             const selectedYear = parseInt(document.getElementById('t_year').value);
-            const doc = new jsPDF({
-                orientation: "landscape",
-                format: 'a4'
-            });
-            renderIndividualMonthPage(doc, selectedGuru, selectedMonth, selectedYear, true);
+            const doc = new jsPDF({ orientation: "landscape", format: 'a4' });
+            
+            let weeksBatches = generateWeeksBatches(selectedYear, selectedMonth);
+            renderIndividualMonthPage(doc, selectedGuru, selectedMonth, selectedYear, true, weeksBatches);
+            
             const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-
             finalizeTeacherPDF(doc, `Individu_${selectedGuru.replace(/ /g, '_')}_${monthNames[selectedMonth]}.pdf`, mode);
         }
 
         function generateAnnualIndividualPDF(mode) {
             if (teacherGlobalData.length === 0) {
-                showAlert("Ambil data dulu.", "Peringatan");
+                showAlert("Ambil data server dulu.", "Peringatan");
                 return;
             }
             const selectedGuru = document.getElementById('t_guruSelector').value;
@@ -1560,10 +1324,8 @@
                 return;
             }
             const selectedYear = parseInt(document.getElementById('t_year').value);
-            const doc = new jsPDF({
-                orientation: "landscape",
-                format: 'a4'
-            });
+            const doc = new jsPDF({ orientation: "landscape", format: 'a4' });
+            
             let isFirstPage = true;
             let dataFound = false;
             for (let m = 0; m < 12; m++) {
@@ -1571,9 +1333,14 @@
                 let allTargetDates = weeksBatches.flat();
                 let targetStrings = allTargetDates.map(d => dateToTextID(d));
                 let hasData = teacherGlobalData.some(item => item.nama === selectedGuru && targetStrings.includes(item.tgl));
-                if (!hasData) continue;
+                
+                // Cek juga apakah ada approval atau libur di bulan tsb, walau absen kosong
+                let hasApp = approvalGlobalData.some(app => app.nama === selectedGuru && getApprovalStatus(selectedGuru, allTargetDates[0])); // Cek simpel
+                
+                if (!hasData && !hasApp) continue;
                 dataFound = true;
-                renderIndividualMonthPage(doc, selectedGuru, m, selectedYear, isFirstPage);
+                
+                renderIndividualMonthPage(doc, selectedGuru, m, selectedYear, isFirstPage, weeksBatches);
                 isFirstPage = false;
             }
             if (!dataFound) {
@@ -1583,11 +1350,10 @@
             }
         }
 
-        function renderIndividualMonthPage(doc, teacherName, monthIndex, year, isFirstPage) {
+        function renderIndividualMonthPage(doc, teacherName, monthIndex, year, isFirstPage, weeksBatches) {
             if (!isFirstPage) doc.addPage();
             const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
             const monthName = monthNames[monthIndex];
-            let weeksBatches = generateWeeksBatches(year, monthIndex);
             let allTargetDates = weeksBatches.flat();
             let matrixData = processSmartMatrix(teacherGlobalData, allTargetDates);
 
@@ -1599,39 +1365,15 @@
             doc.text(`Bulan: ${monthName}`, 14, 25);
             doc.text(`Tahun: ${year}`, 14, 29);
 
-            let headRow1 = [{
-                content: 'No',
-                rowSpan: 2,
-                styles: {
-                    valign: 'middle',
-                    halign: 'center'
-                }
-            }, {
-                content: 'Nama',
-                rowSpan: 2,
-                styles: {
-                    valign: 'middle',
-                    halign: 'center'
-                }
-            }, {
-                content: 'Hari Efektif',
-                colSpan: 12,
-                styles: {
-                    halign: 'center',
-                    fontStyle: 'bold'
-                }
-            }];
+            let headRow1 = [
+                { content: 'No', rowSpan: 2, styles: { valign: 'middle', halign: 'center' } }, 
+                { content: 'Nama', rowSpan: 2, styles: { valign: 'middle', halign: 'center' } }, 
+                { content: 'Hari Efektif', colSpan: 12, styles: { halign: 'center', fontStyle: 'bold' } }
+            ];
             const dayNamesIndo = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
             let headRow2 = [];
             dayNamesIndo.forEach(day => {
-                headRow2.push({
-                    content: day,
-                    colSpan: 2,
-                    styles: {
-                        halign: 'center',
-                        fontStyle: 'bold'
-                    }
-                });
+                headRow2.push({ content: day, colSpan: 2, styles: { halign: 'center', fontStyle: 'bold' } });
             });
 
             let tableBody = [];
@@ -1642,32 +1384,10 @@
             weeksBatches.forEach((batch, wIndex) => {
                 let rowLabel = [];
                 if (wIndex === 0) {
-                    rowLabel.push({
-                        content: '1',
-                        rowSpan: totalRowSpan,
-                        styles: {
-                            valign: 'middle',
-                            halign: 'center'
-                        }
-                    });
-                    rowLabel.push({
-                        content: teacherName,
-                        rowSpan: totalRowSpan,
-                        styles: {
-                            valign: 'middle',
-                            halign: 'center'
-                        }
-                    });
+                    rowLabel.push({ content: '1', rowSpan: totalRowSpan, styles: { valign: 'middle', halign: 'center' } });
+                    rowLabel.push({ content: teacherName, rowSpan: totalRowSpan, styles: { valign: 'middle', halign: 'center' } });
                 }
-                rowLabel.push({
-                    content: `Minggu ${wIndex + 1}`,
-                    colSpan: 12,
-                    styles: {
-                        fontStyle: 'bold',
-                        fillColor: [240, 240, 240],
-                        halign: 'left'
-                    }
-                });
+                rowLabel.push({ content: `Minggu ${wIndex + 1}`, colSpan: 12, styles: { fontStyle: 'bold', fillColor: [240, 240, 240], halign: 'left' } });
                 tableBody.push(rowLabel);
 
                 let weekDatesMap = new Array(6).fill(null);
@@ -1679,59 +1399,38 @@
                 let rowDates = [];
                 weekDatesMap.forEach(d => {
                     let txt = d ? dateToTextID(d) : "";
-                    rowDates.push({
-                        content: txt,
-                        colSpan: 2,
-                        styles: {
-                            halign: 'center',
-                            fontStyle: 'italic',
-                            fontSize: 7
-                        }
-                    });
+                    let hol = d ? isHoliday(d) : null;
+                    let sty = { halign: 'center', fontStyle: 'italic', fontSize: 7 };
+                    if(hol) { sty.fillColor = [255, 230, 230]; sty.textColor = [200, 0, 0]; }
+                    rowDates.push({ content: txt, colSpan: 2, styles: sty });
                 });
                 tableBody.push(rowDates);
 
                 let rowHeaders = [];
-                for (let i = 0; i < 6; i++) {
-                    rowHeaders.push({
-                        content: 'Masuk',
-                        styles: {
-                            halign: 'center',
-                            fontSize: 6
-                        }
-                    });
-                    rowHeaders.push({
-                        content: 'Pulang',
-                        styles: {
-                            halign: 'center',
-                            fontSize: 6
-                        }
-                    });
-                }
+                weekDatesMap.forEach(d => {
+                    let hol = d ? isHoliday(d) : null;
+                    let sty = { halign: 'center', fontSize: 6 };
+                    if(hol) { sty.fillColor = [255, 230, 230]; sty.textColor = [200, 0, 0]; }
+                    rowHeaders.push({ content: 'Masuk', styles: Object.assign({}, sty) });
+                    rowHeaders.push({ content: 'Pulang', styles: Object.assign({}, sty) });
+                });
                 tableBody.push(rowHeaders);
 
                 let rowData = [];
                 weekDatesMap.forEach(d => {
-                    let masuk = "";
-                    let pulang = "";
+                    let masuk = "", pulang = "";
+                    let hol = d ? isHoliday(d) : null;
+                    let sty = { halign: 'center', fontStyle: 'bold' };
+                    if(hol) { sty.fillColor = [255, 230, 230]; sty.textColor = [200, 0, 0]; }
+
                     if (d) {
                         let dateKey = dateToTextID(d);
-                        let data = matrixData[teacherName] && matrixData[teacherName][dateKey];
-                        masuk = (data && data.fixedMasuk) ? data.fixedMasuk : "";
-                        pulang = (data && data.fixedPulang) ? data.fixedPulang : "";
+                        let data = matrixData[teacherName][dateKey];
+                        masuk = data.fixedMasuk || "";
+                        pulang = data.fixedPulang || "";
                     }
-                    rowData.push({
-                        content: masuk,
-                        styles: {
-                            halign: 'center'
-                        }
-                    });
-                    rowData.push({
-                        content: pulang,
-                        styles: {
-                            halign: 'center'
-                        }
-                    });
+                    rowData.push({ content: masuk, styles: Object.assign({}, sty) });
+                    rowData.push({ content: pulang, styles: Object.assign({}, sty) });
                 });
                 tableBody.push(rowData);
             });
@@ -1741,50 +1440,26 @@
                 head: [headRow1, headRow2],
                 body: tableBody,
                 theme: 'grid',
-                styles: {
-                    font: 'helvetica',
-                    fontSize: 7,
-                    cellPadding: 1,
-                    lineColor: [0, 0, 0],
-                    lineWidth: 0.1,
-                    textColor: [0, 0, 0]
-                },
-                headStyles: {
-                    fillColor: [255, 255, 255],
-                    textColor: [0, 0, 0],
-                    fontStyle: 'bold',
-                    lineWidth: 0.1,
-                    lineColor: [0, 0, 0]
-                },
-                bodyStyles: {
-                    fillColor: [255, 255, 255],
-                    textColor: [0, 0, 0]
-                },
-                columnStyles: {
-                    0: {
-                        cellWidth: 8
-                    },
-                    1: {
-                        cellWidth: 45
-                    }
-                },
-                margin: {
-                    left: 10,
-                    right: 10
-                }
+                styles: { font: 'helvetica', fontSize: 7, cellPadding: 1, lineColor: [0, 0, 0], lineWidth: 0.1, textColor: [0, 0, 0] },
+                headStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold', lineWidth: 0.1, lineColor: [0, 0, 0] },
+                bodyStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0] },
+                columnStyles: { 0: { cellWidth: 8 }, 1: { cellWidth: 45 } },
+                margin: { left: 10, right: 10 }
             });
-            addSignature(doc, monthIndex, year);
+            
+            addSignature(doc, monthIndex, year, allTargetDates);
         }
 
         function generateMasterPDF(mode) {
             if (teacherGlobalData.length === 0) {
-                showAlert("Ambil data dulu.", "Peringatan");
+                showAlert("Ambil data server dulu.", "Peringatan");
                 return;
             }
             const selectedMonth = parseInt(document.getElementById('t_month').value);
             const selectedYear = parseInt(document.getElementById('t_year').value);
             const selectedWeek = parseInt(document.getElementById('t_week').value);
             const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+            
             let datesInWeek = [];
             let firstDate = new Date(selectedYear, selectedMonth, 1);
             let dayOfFirst = firstDate.getDay();
@@ -1798,11 +1473,9 @@
                 d.setDate(targetMon.getDate() + i);
                 datesInWeek.push(d);
             }
+            
             let matrixData = processSmartMatrix(teacherGlobalData, datesInWeek);
-            const doc = new jsPDF({
-                orientation: "landscape",
-                format: 'a4'
-            });
+            const doc = new jsPDF({ orientation: "landscape", format: 'a4' });
             createStrictMatrixPage(doc, datesInWeek, matrixData, selectedMonth, selectedYear, true);
 
             finalizeTeacherPDF(doc, `Rekap_Minggu_${selectedWeek}_${monthNames[selectedMonth]}.pdf`, mode);
@@ -1810,19 +1483,18 @@
 
         function generateMonthlyFullPDF(mode) {
             if (teacherGlobalData.length === 0) {
-                showAlert("Ambil data dulu.", "Peringatan");
+                showAlert("Ambil data server dulu.", "Peringatan");
                 return;
             }
             const selectedMonth = parseInt(document.getElementById('t_month').value);
             const selectedYear = parseInt(document.getElementById('t_year').value);
             const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+            
             let weeksBatches = generateWeeksBatches(selectedYear, selectedMonth);
             let allTargetDates = weeksBatches.flat();
             let matrixData = processSmartMatrix(teacherGlobalData, allTargetDates);
-            const doc = new jsPDF({
-                orientation: "landscape",
-                format: 'a4'
-            });
+            const doc = new jsPDF({ orientation: "landscape", format: 'a4' });
+            
             weeksBatches.forEach((batch, index) => {
                 let isFirst = (index === 0);
                 createStrictMatrixPage(doc, batch, matrixData, selectedMonth, selectedYear, isFirst);
@@ -1833,23 +1505,24 @@
 
         function generateAnnualMasterPDF(mode) {
             if (teacherGlobalData.length === 0) {
-                showAlert("Ambil data dulu.", "Peringatan");
+                showAlert("Ambil data server dulu.", "Peringatan");
                 return;
             }
             const selectedYear = parseInt(document.getElementById('t_year').value);
-            const doc = new jsPDF({
-                orientation: "landscape",
-                format: 'a4'
-            });
+            const doc = new jsPDF({ orientation: "landscape", format: 'a4' });
+            
             let isGlobalFirstPage = true;
             let dataFound = false;
+            
             for (let m = 0; m < 12; m++) {
                 let weeksBatches = generateWeeksBatches(selectedYear, m);
                 let allTargetDates = weeksBatches.flat();
                 let targetStrings = allTargetDates.map(d => dateToTextID(d));
+                
                 let hasDataInMonth = teacherGlobalData.some(item => targetStrings.includes(item.tgl) && TEACHER_LIST.includes(item.nama));
                 if (!hasDataInMonth) continue;
                 dataFound = true;
+                
                 let matrixData = processSmartMatrix(teacherGlobalData, allTargetDates);
                 weeksBatches.forEach((batch) => {
                     createStrictMatrixPage(doc, batch, matrixData, m, selectedYear, isGlobalFirstPage);
@@ -1869,6 +1542,7 @@
             const dayNamesIndo = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
             const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
             const monthName = monthNames[monthIndex];
+            
             doc.setFont("helvetica", "bold");
             doc.setFontSize(10);
             doc.text("DAFTAR KEHADIRAN GURU DAN STAFF SD INPRES LELINGLUAN", 148.5, 12, null, null, "center");
@@ -1876,126 +1550,100 @@
             doc.setFontSize(8);
             doc.text(`Bulan: ${monthName}`, 14, 25);
             doc.text(`Tahun: ${year}`, 14, 29);
-            let row1 = [{
-                content: 'No',
-                rowSpan: 4,
-                styles: {
-                    valign: 'middle',
-                    halign: 'center'
-                }
-            }, {
-                content: 'Nama',
-                rowSpan: 4,
-                styles: {
-                    valign: 'middle',
-                    halign: 'center'
-                }
-            }, {
-                content: 'Hari Efektif',
-                colSpan: datesSubset.length * 2,
-                styles: {
-                    halign: 'center',
-                    fontStyle: 'bold'
-                }
-            }];
-            let row2 = [],
-                row3 = [],
-                row4 = [];
+            
+            let row1 = [
+                { content: 'No', rowSpan: 4, styles: { valign: 'middle', halign: 'center' } }, 
+                { content: 'Nama', rowSpan: 4, styles: { valign: 'middle', halign: 'center' } }, 
+                { content: 'Hari Efektif', colSpan: datesSubset.length * 2, styles: { halign: 'center', fontStyle: 'bold' } }
+            ];
+            let row2 = [], row3 = [], row4 = [];
+            
             datesSubset.forEach(d => {
                 let hari = dayNamesIndo[d.getDay()];
                 let tglString = dateToTextID(d);
-                row2.push({
-                    content: hari,
-                    colSpan: 2,
-                    styles: {
-                        halign: 'center',
-                        fontStyle: 'bold'
-                    }
-                });
-                row3.push({
-                    content: tglString,
-                    colSpan: 2,
-                    styles: {
-                        halign: 'center',
-                        fontStyle: 'italic'
-                    }
-                });
-                row4.push({
-                    content: 'Masuk',
-                    styles: {
-                        halign: 'center'
-                    }
-                });
-                row4.push({
-                    content: 'Pulang',
-                    styles: {
-                        halign: 'center'
-                    }
-                });
+                let hol = isHoliday(d);
+                
+                let styHead = { halign: 'center', fontStyle: 'bold' };
+                let styItalic = { halign: 'center', fontStyle: 'italic' };
+                let styBase = { halign: 'center' };
+                
+                if (hol) {
+                    let alertColor = { fillColor: [255, 230, 230], textColor: [200, 0, 0] };
+                    styHead = Object.assign(styHead, alertColor);
+                    styItalic = Object.assign(styItalic, alertColor);
+                    styBase = Object.assign(styBase, alertColor);
+                }
+
+                row2.push({ content: hari, colSpan: 2, styles: styHead });
+                row3.push({ content: tglString, colSpan: 2, styles: styItalic });
+                row4.push({ content: 'Masuk', styles: Object.assign({}, styBase) });
+                row4.push({ content: 'Pulang', styles: Object.assign({}, styBase) });
             });
+            
             let tableBody = [];
             listToRender.forEach((name, idx) => {
                 let noUrut = idx + 1;
                 let row = [noUrut, name];
                 datesSubset.forEach(d => {
+                    let hol = isHoliday(d);
+                    let cellSty = { halign: 'center', fontStyle: 'bold' };
+                    if (hol) cellSty = Object.assign(cellSty, { fillColor: [255, 230, 230], textColor: [200, 0, 0] });
+
                     let dateKey = dateToTextID(d);
                     let data = matrixData[name] && matrixData[name][dateKey];
-                    row.push((data && data.fixedMasuk) ? data.fixedMasuk : "");
-                    row.push((data && data.fixedPulang) ? data.fixedPulang : "");
+                    row.push({ content: (data && data.fixedMasuk) ? data.fixedMasuk : "", styles: cellSty });
+                    row.push({ content: (data && data.fixedPulang) ? data.fixedPulang : "", styles: cellSty });
                 });
                 tableBody.push(row);
             });
+            
             doc.autoTable({
                 startY: 32,
                 head: [row1, row2, row3, row4],
                 body: tableBody,
                 theme: 'grid',
-                styles: {
-                    font: 'helvetica',
-                    fontSize: 7,
-                    cellPadding: 1,
-                    lineColor: [0, 0, 0],
-                    lineWidth: 0.1,
-                    textColor: [0, 0, 0]
-                },
-                headStyles: {
-                    fillColor: [255, 255, 255],
-                    textColor: [0, 0, 0],
-                    fontStyle: 'bold',
-                    lineWidth: 0.1,
-                    lineColor: [0, 0, 0]
-                },
-                bodyStyles: {
-                    fillColor: [255, 255, 255],
-                    textColor: [0, 0, 0]
-                },
-                columnStyles: {
-                    0: {
-                        cellWidth: 8
-                    },
-                    1: {
-                        cellWidth: 45
-                    }
-                },
-                margin: {
-                    left: 10,
-                    right: 10
-                }
+                styles: { font: 'helvetica', fontSize: 7, cellPadding: 1, lineColor: [0, 0, 0], lineWidth: 0.1, textColor: [0, 0, 0] },
+                headStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold', lineWidth: 0.1, lineColor: [0, 0, 0] },
+                bodyStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0] },
+                columnStyles: { 0: { cellWidth: 8 }, 1: { cellWidth: 45 } },
+                margin: { left: 10, right: 10 }
             });
-            addSignature(doc, monthIndex, year);
+            
+            addSignature(doc, monthIndex, year, datesSubset);
         }
 
-        function addSignature(doc, monthIndex, year) {
-            let finalY = doc.lastAutoTable.finalY + 10;
+        function addSignature(doc, monthIndex, year, datesArray) {
+            let holidays = getHolidaysInDates(datesArray);
+            let finalY = doc.lastAutoTable.finalY + 5;
+            
+            // Print Keterangan Libur (Legend)
+            if (holidays.length > 0) {
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(8);
+                doc.text("Keterangan Hari Libur:", 14, finalY);
+                finalY += 4;
+                doc.setFont("helvetica", "italic");
+                holidays.forEach(h => {
+                    let rangeText = h.tgl_selesai ? `${h.tgl_mulai} s.d ${h.tgl_selesai}` : h.tgl_mulai;
+                    doc.text(`- ${rangeText} : ${h.nama_libur} (${h.status})`, 14, finalY);
+                    finalY += 4;
+                });
+                finalY += 2; // Spasi ekstra sebelum signature
+            } else {
+                finalY += 5; // Spasi jika tidak ada libur
+            }
+
             if (finalY > 170) {
                 doc.addPage();
                 finalY = 20;
             }
+            
             const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
             let lastDate = new Date(year, monthIndex + 1, 0);
             let tglTerakhir = lastDate.getDate();
             let titimangsa = `Lelingluan, ${tglTerakhir} ${monthNames[monthIndex]} ${year}`;
             let signX = 200;
+            
             doc.setFont("helvetica", "normal");
             doc.setFontSize(9);
             doc.text(titimangsa, signX, finalY);
